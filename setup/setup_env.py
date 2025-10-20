@@ -37,10 +37,18 @@ def setup_env_file():
     if ENV_FILE.exists():
         print(".env file already exists.")
         return
-    print("Creating .env file...")
-    openai_key = input("Enter your OpenAI API key (sk-...): ").strip()
-    anthropic_key = input("Enter your Anthropic API key (optional): ").strip()
-    google_key = input("Enter your Google API key (optional): ").strip()
+
+    print("Creating .env file automatically...")
+
+    # Option 1: hardcode placeholders (safe default)
+    openai_key = os.getenv("OPENAI_API_KEY", "")
+    anthropic_key = ""
+    google_key = ""
+
+    # Option 2 (optional): read from system environment if already exported
+    openai_key = os.getenv("OPENAI_API_KEY", openai_key)
+    anthropic_key = os.getenv("ANTHROPIC_API_KEY", anthropic_key)
+    google_key = os.getenv("GOOGLE_API_KEY", google_key)
 
     ENV_FILE.write_text(
         f"OPENAI_API_KEY={openai_key}\n"
